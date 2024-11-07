@@ -4,7 +4,12 @@
 
 -- Select department table, the employee table and vendor table. Let's explore the database a little!
 
+select * 
+from humanresources.department
 
+select * from humanresources.employee
+
+select * from purchasing.vendor
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -12,7 +17,7 @@
 
 -- Select only name, start time and end time.
 
-
+select name, starttime, endtime from humanresources.shift;
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -20,8 +25,11 @@
 
 -- Distinct group names from department and businessentityid from jobcandidate
 
+select distinct groupname from humanresources.department;
 
+select * from humanresources.department;
 
+select distinct businessentityid from humanresources.jobcandidate;
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 -- From different schemas: sales
@@ -49,7 +57,13 @@
 --Q1: SELECT the DISTINCT title, last name, middlename and first_name of each person from the person schema. Return only 231 rows.
 --A1;
 
-
+select distinct 
+    title, 
+	lastname,
+	middlename,
+	firstname,
+from person
+limit 231;
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -158,6 +172,9 @@ WHERE firstname LIKE 'J___';
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 -- What if we want firstnames that contains the letter a inside?
+SELECT *
+FROM person.person
+WHERE UPPER(lastname) NOT Like '%A%'
 
 
 -- not tallying
@@ -173,7 +190,15 @@ WHERE firstname LIKE 'J___';
 
 
 
--- From the employee table, choose middle name that contain
+-- From the employee table, choose those that do not fall under this date range
+-- '1977-06-06' '1984-04-30' '1985-05-04'
+SELECT *
+FROM humanresources.employee 
+WHERE birthdate NOT IN ( 
+'1977-06-06',
+'1984-04-30',
+'1985-05-04'
+);
 
 
 
@@ -190,17 +215,34 @@ FROM humanresources.employee
 GROUP BY gender;
 
 -- From employee table, group by maritalstatus
-
+SELECT
+maritalstatus 
+FROM humanresources.employee
+GROUP BY maritalstatus;
 
 
 -- We can also group more than one column
-
+SELECT
+gender,
+maritalstatus,
+jobtitle
+FROM humanresources.employee
+GROUP BY gender,
+maritalstatus,
+jobtitle;
 
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 -- All the AGGREGATES!
-
+SELECT 
+gender,
+COUNT (gender) AS Headcount, 
+COUNT(DISTINCT jobtitle) AS Job_Title
+SUM (vacationhours) AS total_vacation_hours
+AVG 
+FROM humanresources.employee 
+GROUP BY gender;
 
 
 -- Q2: Analyse if the marital status of each gender affects the number of vacation hours one will take
